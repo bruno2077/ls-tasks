@@ -9,15 +9,6 @@
                 "password":"12345",
                 "lastLogin":1672488862248,
                 "logged":true
-            },
-            {
-                "id":2,
-                "avatar":"default.png",
-                "username":"John Doe",
-                "whois":"Lorem Ipsum Developer",
-                "password":"12345",
-                "lastLogin":1672408820000,
-                "logged":true
             }
         ],
         

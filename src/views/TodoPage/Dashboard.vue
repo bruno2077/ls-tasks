@@ -43,8 +43,8 @@
                     <span v-else>tem <span class="taskAmount">{{notDoneAmount}} tarefas</span> pendentes.</span>
                 </p>
                     
-                <b-input class="search" icon="fas fa-search" v-model="searchInput" @input="filterNotes()"/>
-                <Note v-for="note  in currentNotes" :key="note.id+'.'+listKey" :note="note" class="userNote" 
+                <BrInput class="search" icon="fas fa-search" v-model="searchInput" @input="filterNotes()"/>
+                <NoteComponent v-for="note  in currentNotes" :key="note.id+'.'+listKey" :note="note" class="userNote" 
                     @check="toggleNoteStatus" @edit="getNoteToEdit" @delete="getNoteToDelete"
                 />
                 <div class="divBtnNew">
@@ -54,13 +54,13 @@
                 </div>
             </div>
             
-            <b-modal v-if="showEditModal" width="660px">
+            <BrModal v-if="showEditModal" width="660px">
                 <div slot="body" class="editNoteModal">
                     <i @click="closeEditModal()" class='modalCloseBtn fas fa-times'></i>
                     <h3 v-if="selectedNote.id">Editar Tarefa</h3>
                     <h3 v-else>Cadastrar Tarefa</h3>
-                    <b-input  class="note" v-model="selectedNote.title"></b-input>
-                    <b-input tag="textarea" label="Descrição:" class="description" v-model="selectedNote.description"></b-input>
+                    <BrInput class="note" v-model="temptitle" @change="getLog()"></BrInput>
+                    <BrInput tag="textarea" label="Descrição:" class="description" v-model="selectedNote.description"></BrInput>
                     <div class="footer">
                         <div>
                             <div class="divRadio" :class="selectedNote.category === 'Urgente' ? 'selected' : ''" 
@@ -79,19 +79,17 @@
                                 <span class="label">Importante</span>
                             </div>
                         </div>
-                        <button v-if="selectedNote.id" class="btn green" :disabled="!selectedNote.title"
-                            @click="saveNote()"
-                        >
+                        <button v-if="selectedNote.id" class="btn green" :disabled="!selectedNote.title" @click="saveNote()">
                             Editar
                         </button>
-                        <button v-else class="btn green" :disabled="!selectedNote.title"
-                            @click="saveNote()"
-                        >Adicionar</button>
-                    </div>    
+                        <button v-else class="btn green" :disabled="!selectedNote.title" @click="saveNote()">
+                            Adicionar
+                        </button>
+                    </div>
                 </div>
-            </b-modal>
+            </BrModal>
 
-            <b-modal v-if="showDelModal" width="477px">
+            <BrModal v-if="showDelModal" width="477px">
                 <div slot="body" class="delNoteModal">
                     <div class="bigIcon">
                         <i class="far fa-trash-alt"></i>
@@ -103,29 +101,34 @@
                         <button class="btn red" @click="deleteNote()">Confirmar</button>
                     </div>
                 </div>
-            </b-modal>
+            </BrModal>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { ref, onBeforeMount, computed, reactive } from 'vue'
+    import { ref, onBeforeMount, computed } from 'vue'
     import { useAppStore } from '../../stores/appStore'
     import BrInput from '../../components/BrInput.vue'
-    import Note from '../../components/Note.vue'
-    import Modal from '../../components/Modal.vue'    
+    import NoteComponent from '../../components/Note.vue'
+    import BrModal from '../../components/Modal.vue' 
+    import { User, Note } from '../../types'   
     
     const store = useAppStore()
 
-    const noteInitialState = {
+    const noteInitialState: Note = {
+        id: 0,
+        userId: store.user.id,
         done: false,
         category: '',
         title: '',
         description: '',
-        updatedAt: ''
+        updatedAt: 0
     }
 
-    const categories = reactive([
+    const temptitle = ref('')
+
+    const categories = ref(<Array<any>>[
         {
             name: 'Todas',
         },
@@ -152,12 +155,12 @@
     ])    
     const showDelModal = ref(false)
     const showEditModal = ref(false)
-    let notes: any[] = reactive([])
-    let currentNotes: any[] = reactive([])
+    let notes = ref<Array<Note>>([])
+    let currentNotes = ref<Array<Note>>([])
     const selectedCategory = ref('Todas')
     const searchInput = ref('')
-    let selectedNote = reactive({...noteInitialState})
-    const listKey = ref(1), // usado pra forçar update na lista de notas
+    const selectedNote = ref<Note>({...noteInitialState})
+    const listKey = ref(1) // usado pra forçar update na lista de notas
     const catMenuOpen = ref(false)
     
     onBeforeMount( () => {
@@ -165,21 +168,26 @@
     })
 
     const urgentAmount = computed( () => {
-        return notes.filter((el: any )=> el.category === 'Urgente').length
+        return notes.value.filter((el: Note )=> el.category === 'Urgente').length
     })
     const importantAmount = computed( () => {
-        return notes.filter((el: any )=> el.category === 'Importante').length
+        return notes.value.filter((el: Note )=> el.category === 'Importante').length
     })
     const notDoneAmount = computed( () => {
-        return notes.filter((el: any )=> !el.done).length
+        return notes.value.filter((el: Note )=> !el.done).length
     })
     const tasksAmount = computed( () => {
-        return notes.length
+        return notes.value.length
     })
+
+    function getLog(){
+        console.log("WAT: ", temptitle.value)
+        // console.log(selectedNote.value.title)
+    }
 
 
     function getNotes(): void{
-        notes =  reactive(store.notes.filter((el: any) => el.userId === store.user.id)) // armazena todas as tarefas
+        notes.value =  store.notes.filter((el: Note) => el.userId === store.user.id) // armazena todas as tarefas
         countCategory() // Conta quantas tarefas são 'Urgente' e 'Importante'
         filterNotes() // armazena e lida com as tarefas que são mostradas                
         ++listKey.value
@@ -188,24 +196,24 @@
     function countCategory(): void{
         let urgentes = 0
         let importantes = 0
-        notes.forEach((el: any) => {
+        notes.value.forEach((el: Note) => {
             if(el.category === 'Urgente')
                 ++urgentes
             if(el.category === 'Importante')
                 ++importantes
         })
-        categories[1].chip.amount = urgentes
-        categories[2].chip.amount = importantes
+        categories.value[1].chip.amount = urgentes
+        categories.value[2].chip.amount = importantes
     }
 
     // ordena a lista de tarefas pela data e, se categoria 'Todas', pela categoria.
     function sortNoteList(){
-        currentNotes.sort(compareByDate)
+        currentNotes.value.sort(compareByDate)
         if(selectedCategory.value === 'Todas')
-            currentNotes.sort(compareByCategory)
+            currentNotes.value.sort(compareByCategory)
     }
 
-    function compareByCategory(a: any, b: any): number {
+    function compareByCategory(a: Note, b: Note): number {
         if(a.category === b.category)
             return 0
 
@@ -222,7 +230,7 @@
         return 0 // Só pro ts não chorar
     }
 
-    function compareByDate(a: any, b: any): number {
+    function compareByDate(a: Note, b: Note): number {
         if ( a.updatedAt < b.updatedAt )
             return -1			
         if ( a.updatedAt > b.updatedAt )
@@ -238,39 +246,39 @@
         // baseado no input e na selectedCategory filtra na store
     }
 
-    function getNoteToEdit(note: any){
-        selectedNote = reactive({...note})
+    function getNoteToEdit(note: Note){
+        selectedNote.value = {...note}
         showEditModal.value = true
     }
 
-    function getNoteToDelete(note: any){
-        selectedNote = reactive({...note})
+    function getNoteToDelete(note: Note){
+        selectedNote.value = {...note}
         showDelModal.value = true
     }
 
     function deleteNote(){
         showDelModal.value = false
-        store.deleteNote(selectedNote.id)
-        selectedNote = reactive({...noteInitialState})
+        store.deleteNote(selectedNote.value.id)
+        selectedNote.value = {...noteInitialState}
         getNotes()
     }
     function editNote(){
-        store.updateNote(selectedNote)
+        store.updateNote(selectedNote.value)
         // notes = reactive([...store.notes]) // meter um get user notes lá na store. uma action ou algo assim.
         // roda o filtro        
     }
     function closeEditModal(){
-        selectedNote = reactive({...noteInitialState})
+        selectedNote.value = {...noteInitialState}
         showEditModal.value = false
     }
 
     function setSelectedNoteCategory(name: string){
-        if(name === selectedNote.category)
-            selectedNote.category = ''
-        else selectedNote.category = name
+        if(name === selectedNote.value.category)
+            selectedNote.value.category = ''
+        else selectedNote.value.category = name
     }
     function closeDelModal(){
-        selectedNote = {...noteInitialState}
+        selectedNote.value = {...noteInitialState}
         showDelModal.value = false
     }
 
@@ -284,30 +292,30 @@
     function filterNotesByCategory(){
         switch(selectedCategory.value){
             case 'Todas':
-                currentNotes = reactive([...notes])
+                currentNotes.value = [...notes.value]
                 break
             case 'Urgentes':
-                currentNotes = reactive(notes.filter(el => el.category === 'Urgente'))
+                currentNotes.value = notes.value.filter(el => el.category === 'Urgente')
                 break
             case 'Importantes':
-                currentNotes = reactive(notes.filter(el => el.category === 'Importante'))
+                currentNotes.value = notes.value.filter(el => el.category === 'Importante')
                 break
             case 'Outras':
-                currentNotes = reactive(notes.filter(el => el.category === ''))
+                currentNotes.value = notes.value.filter(el => el.category === '')
                 break
             case 'Finalizadas':
-                currentNotes = reactive(notes.filter(el => el.done))
+                currentNotes.value = notes.value.filter(el => el.done)
                 break
         }
     }
 
     function filterNotesByString(){
         if(searchInput.value){
-            currentNotes = reactive(currentNotes.filter(el => el.title.includes(searchInput) ||  el.description.includes(searchInput)))
+            currentNotes.value = currentNotes.value.filter(el => el.title.includes(searchInput.value) ||  el.description.includes(searchInput.value))
         }
     }
 
-    function toggleNoteStatus(note: any){
+    function toggleNoteStatus(note: Note){
         note.done = !note.done
         store.updateNote(note)
         getNotes()
@@ -315,21 +323,21 @@
 
     function saveNote(){
         showEditModal.value = false
-        if(selectedNote.id){ // UPDATE
-            selectedNote.updatedAt = new Date().getTime()
-            store.updateNote(selectedNote)
+        if(selectedNote.value.id){ // UPDATE
+            selectedNote.value.updatedAt = new Date().getTime()
+            store.updateNote(selectedNote.value)
         }
         else { // CREATE
-            selectedNote.id = idGenerator(notes)
-            selectedNote.userId = store.user.id
-            selectedNote.updatedAt = new Date().getTime()
-            store.createNote(selectedNote)
+            selectedNote.value.id = idGenerator(notes.value)
+            selectedNote.value.userId = store.user.id
+            selectedNote.value.updatedAt = new Date().getTime()
+            store.createNote(selectedNote.value)
         }
-        selectedNote = reactive({...noteInitialState})
+        selectedNote.value = {...noteInitialState}
         getNotes()
     }
 
-    function idGenerator(arrayObject: any[]){
+    function idGenerator(arrayObject: Note[]): number{
         let biggest = 1
         arrayObject.forEach(el => {
             if(el.id >= biggest)

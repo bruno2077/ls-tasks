@@ -4,7 +4,7 @@
             <div class="modal-wrapper">
                 <div class="modal-container" :style="width ? `max-width: ${props.width}` : 'max-width: 350px'">
                     <div>
-                        <slot name="body">
+                        <slot>
                             <!-- default body -->
                         </slot>
                     </div>
@@ -15,6 +15,7 @@
 </template>
 
 <script setup lang="ts">
+    import { defineProps } from 'vue'
     const props = defineProps({
         width: String // css width value
     })

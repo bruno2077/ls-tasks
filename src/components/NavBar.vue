@@ -34,7 +34,8 @@
         </div>
         <div>
             <span v-if="avatar" class="avatarContainer">
-                <img :src="avatarUrl" alt="user avatar" class="avatarImg">
+                <img :src="getImageUrl(store.user.avatar)" alt="user avatar" class="avatarImg">
+                <!-- <img :src="avatarUrl" alt="user avatar" class="avatarImg"> -->
                 <div v-if="direction !== 'column'" class="userInfo">
                     <div class="username" :class="defineClass()">{{store.user.username}}</div>
                     <div class="userAbout" :class="defineClass()">{{store.user.whois}}</div>
@@ -45,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, reactive, computed } from 'vue'
+    import { ref, reactive, computed, PropType } from 'vue'
     import { useAppStore } from '../stores/appStore'
     import { useRoute } from 'vue-router'    
 
@@ -57,7 +58,7 @@
         color: String, // css color
         bgColor: String, // css color
         logo: String, // logo img name
-        links: {type: [] as any[]}, // [ { icon, label, url },... ]
+        links: {type: Array as PropType<any[]>}, // [ { icon, label, url },... ]
         avatar: Boolean, // show avatar or not
         bgSelected: String, // css color
         theme: {type: String, required: true} // color theme. current: 'blue', 'light'
@@ -65,13 +66,16 @@
 
     const themes = ['blue', 'white']
     
-    const avatarUrl = reactive( require(`../assets/img/avatar/${store.user.avatar}`) )
+    // const avatarUrl = ref( require(`../assets/img/avatar/${store.user.avatar}`) )
     const openDropdown = ref(false)
 
     const url = computed( () => {
         return route.path
     })
 
+    function getImageUrl(name: string) {
+        return new URL(`../assets/images/${name}`, import.meta.url).href
+    }
 
     function defineStyle(): string{
         let style = ''

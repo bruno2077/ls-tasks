@@ -1,73 +1,57 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-interface User {
-    id: number,
-    avatar: string,
-    username: string,
-    whois: string,
-    password: string,
-    lastLogin: number, // miliseconds
-    logged: boolean
-}
-interface Note {
-    id: number,
-    userId: number,
-    done: boolean,
-    category: string,
-    title: string,
-    description: string,
-    updatedAt: number // miliseconds
-}
+import { User, Note } from '../types'
 
 export const useAppStore = defineStore('appStore', () => {
 
-    const users = ref([] as User[])
-    const notes = ref([] as Note[])
     const user = ref({} as User)
+    const notes = ref([] as Note[])
 
 
-    function loadUsers(payload: User[]) {
-        users.value = JSON.parse(JSON.stringify(payload))
+    // function loadUsers(payload: User[]) {
+    //     users.value = JSON.parse(JSON.stringify(payload))
+    // }
+    
+    function loadUser(payload: User) {
+        user.value = payload
+        localStorage.setItem('user', JSON.stringify(payload) )
+        console.log('user updated: ', user.value)
     }
     
-    function loadUser(payload: User | null) {
-        user.value = JSON.parse(JSON.stringify(payload))
-    }
+
+    // function createUser(payload: User){
+    //     users.value.push(payload)
+    //     localStorage.setItem('appData', JSON.stringify([{users: users.value, notes: notes.value}]) ) 
+    // }
+
+    //    function updateUser(payload: User){
+    //         for(let i = 0; i < users.value.length; i++){
+    //             if(users.value[i].id === payload.id) {
+    //                 users.value[i] = {...payload}
+    //                 break
+    //             }
+    //         }
+    //         localStorage.setItem('appData', JSON.stringify([{users: users.value, notes: notes.value}]) )
+    //     }
 
     function loadNotes(payload: Note[]) {
         notes.value = JSON.parse(JSON.stringify(payload))
     }
 
-    function createUser(payload: User){
-        users.value.push(payload)
-        // Sempre atualiza TODO LocalStorage a cada alteração
-        localStorage.setItem('appData', JSON.stringify([{users: users.value, notes: notes.value}]) ) 
-    }
-
-   function updateUser(payload: User){
-        for(let i = 0; i < users.value.length; i++){
-            if(users.value[i].id === payload.id) {
-                users.value[i] = {...payload}
-                break
-            }
-        }
-        localStorage.setItem('appData', JSON.stringify([{users: users.value, notes: notes.value}]) )
-    }
-
     function createNote(payload: Note){
         notes.value.push(payload)
-        localStorage.setItem('appData', JSON.stringify([{users: users.value, notes: notes.value}]) ) 
+        localStorage.setItem('notes', JSON.stringify(notes) )
 
     }
 
     function updateNote(payload: Note){
         for(let i = 0; notes.value.length; i++){
             if(notes.value[i].id === payload.id){
-                notes.value[i] = {...payload}
+                notes.value[i] = payload
                 break
             }
         }
-        localStorage.setItem('appData', JSON.stringify([{users: users.value, notes: notes.value}]) ) 
+        localStorage.setItem('notes', JSON.stringify(notes) ) 
     }
 
     function deleteNote(payload: number){
@@ -77,8 +61,9 @@ export const useAppStore = defineStore('appStore', () => {
                 break
             }
         }            
-        localStorage.setItem('appData', JSON.stringify([{users: users.value, notes: notes.value}]) )
+        localStorage.setItem('notes', JSON.stringify(notes) )
     }
 
-    return {users, notes, user, loadUsers, loadUser, loadNotes, createUser, updateUser, createNote, updateNote, deleteNote}
+    return {user, notes, loadUser, loadNotes, createNote, updateNote, deleteNote}
+    // return {users, notes, user, loadUsers, loadUser, loadNotes, createUser, updateUser, createNote, updateNote, deleteNote}
 })

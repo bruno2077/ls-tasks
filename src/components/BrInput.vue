@@ -1,34 +1,38 @@
 <template>
     <div class="container">
-        <label v-if="label" :for="id">{{label}}</label>
-        <textarea v-if="tag === 'textarea'" :id="id" :placeholder="placeholder" 
-            :value="value" @input="updateValue"
+        <label v-if="props.label" :for="id">{{props.label}}</label>
+        <textarea v-if="props.tag === 'textarea'" :id="id" :placeholder="props.placeholder" 
+            :value="modelValue " @input="updateValue"
         ></textarea>
-        <input v-else :type="type ? type : 'text'" :id="id" :placeholder="placeholder || 'Digite'" 
-            :value="value" @input="updateValue"
+        <input v-else :type="props.type ? props.type : 'text'" :id="id" :placeholder="props.placeholder || 'Digite'" 
+            :value="modelValue " @input="updateValue"
         >
-        <i v-if="icon" class="inputIcon" :class="icon"></i>
+        <i v-if="props.icon" class="inputIcon" :class="icon"></i>
     </div>    
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits } from 'vue'
+    import { ref, defineEmits, defineProps } from 'vue'
 
     const props = defineProps({
+        modelValue: String,
         tag: String, // ['input', 'textarea']
         type: String, // input type ['password', 'text']
         label: String,
         icon: String,
         placeholder: String,
-        value: String
     })
 
     const id = ref(`${Math.random() * 1000000}`) // TEMP. rumar depois um jeito de gerar id unico
-    const emit = defineEmits(['input'])        
+    // const emit = defineEmits(['input'])        
+    const emit = defineEmits({
+        update: (value: string) => true
+    })
 
     function updateValue(event: Event){
-        const target = event.target as HTMLTextAreaElement
-        emit('input', target.value)
+        const newValue = (event.target as HTMLInputElement).value
+        console.log("VALOR: ", newValue) // até aki OK
+        emit('update', newValue)
     }
 </script>
 

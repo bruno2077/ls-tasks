@@ -35,7 +35,7 @@
 	const navLogo = ref('logo.png')
 	const clientWidth = ref(Number(window.innerWidth))
 
-	const navLinks = [
+	const navLinks: any[] = [
 		{
 			icon: 'far fa-chart-bar',
 			label: 'Dashboard',
@@ -59,6 +59,7 @@
 
 	
 	onMounted(() => {
+		console.log("APP ZTORE: ", store.user)
 		const currentUser = {...store.user}
 		if(!currentUser.id) // Se não tem usuário logado redir pra loginPage
 			router.push('/')

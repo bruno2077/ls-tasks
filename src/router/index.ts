@@ -12,13 +12,13 @@ const routes = [
     path: '/app',
     component: TodoPage,
     children: [
-      {
-        path: '',					
-        redirect: 'dashboard',
-      },
+      // {
+      //   path: '',					
+      //   redirect: 'dashboard',
+      // },
       {
         path: 'dashboard',
-        name: 'dash',
+        name: 'dashboard',
         component: () => import("../views/TodoPage/Dashboard.vue")
       },
       {

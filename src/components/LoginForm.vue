@@ -15,6 +15,7 @@
     import BrInput from './BrInput.vue'
     import { useAppStore } from '../stores/appStore'
     import { useRouter } from 'vue-router'
+    import { User } from '../types'
 
     const store = useAppStore()
     const router = useRouter()
@@ -24,27 +25,38 @@
     const avatar = ref('')
     const password = ref('')
     // const confirmPassword = ref('')
-    const signUp = ref(false)
+    const logged = ref(false)
 
 
     // Procura o usuário na Store. retorna o usuário ou false em caso de erro.
-    function findUser(defaultUser: boolean): any | false {
-        let user: any = {}
-        if(defaultUser)
-            user = {...store.users.filter(el => el.id === 1)[0] }
-        else user = store.users.filter(el => el.username === username.value && el.password === password.value)[0]
+    // function findUser(defaultUser: boolean): User | false {
+    //     let user: User
+    //     if(defaultUser)
+    //         user = {...store.users.filter(el => el.id === 1)[0] }
+    //     else user = store.users.filter(el => el.username === username.value && el.password === password.value)[0]
         
-        if(Object.keys(user).length)
-            return user                
-        return false // Não encontrado
-    }
+    //     if(Object.keys(user).length)
+    //         return user                
+    //     return false // Não encontrado
+    // }
 
     // Cria usuário ou faz login.
     // No caso de login: com o 1º campo vazio loga com o usuário padrão.
     // No caso de criar: nome/email de usuário deve ser único.
-    function enter(): void{
+    function enter(): void {
+        let user: User = store.user
+        console.log('pre user: ', JSON.parse(JSON.stringify(user)))
+        user.logged = true
+        user.lastLogin = new Date().getTime() // atualiza o horário do último login
+        store.loadUser(user) // Carrega o usuário logado na Store e no LocalStorage
+
+        router.push('/app/dashboard') // tela dashboard
+        
+
+        //-----------------------
+        /*
         if(!signUp.value){ // LOGIN
-            let user: any // tipo User da store
+            let user: User | false
             if(!username.value) // Carrega usuário padrão
                 user = findUser(true)                        
             else user = findUser(false)
@@ -59,16 +71,20 @@
             }
             else alert("Usuário e/ou senha incorreto(s). DICA: Deixe o nome em branco para logar com usuário padrão!")
         }
+        //*/
     }
 
 
     onMounted( () => {
+        // REVER ISSO
         // Se tem usuário logado já preenche o form com seus dados.
         if(store.user.id){
             username.value = store.user.username
             whois.value = store.user.whois
             avatar.value = store.user.avatar
             password.value = store.user.password
+            
+            logged.value = true
         }
     })
 </script>
