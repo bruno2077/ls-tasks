@@ -1,14 +1,35 @@
 <template>
     <div class="configContainer">
+
+        
            
-        <div style="width: 100%; margin: 15px" class="configForm">
+        <div style="margin: 15px" class="configForm">
+
             <h3 style="text-align: center;">Configurações</h3>
+
             <div class="avatarContainer">
                 <div class="avatarDiv" @click="openAvatarModal()">
                     <img :src="`https://api.dicebear.com/5.x/adventurer/svg?seed=${avatarSeed}`" alt="Avatar" >
                 </div>
             </div>
 
+            <div class="">                
+                <BrInput label="Nome de usuário ou e-mail:" class="inputs" v-model="username" />
+                <BrInput label="Ocupação:" class="inputs" v-model="whois" />
+                <BrInput label="Senha:" class="inputs" v-model="password" type="password"/>
+                <BrInput label="Repita a senha:" class="inputs" v-model="confirmPassword" type="password"/>
+                <div class="row">
+                    <button class="btn green side"  @click="updateUserData()">Salvar</button>
+                    
+                    <span class="side" style="text-align: center">
+                        <span class="resetContainer">
+                            <span class="resetCaption" @click="showResetModal = true">Limpar memória</span>
+                        </span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- 
             <div class="row">
                 <span class="side">
                     <BrInput label="Nome de usuário ou e-mail:" class="inputs" v-model="username" style=""/>
@@ -34,6 +55,7 @@
                     <span class="resetCaption" @click="showResetModal = true">Limpar memória</span>
                 </span>
             </div>
+             -->
         </div>
 
         <BrModal v-if="showResetModal" width="450px">
@@ -68,11 +90,11 @@
                             >
                         <!-- </div> -->
                     </div>
+                    <div style="width: 100%; display: flex; padding: 20px 5px 10px 5px; justify-content: center">
+                        <button class="btn sm red" style="width: 100%" @click="showAvatarModal = false">Cancelar</button>
+                    </div>          
                 </div>
             </div>  
-            <div style="width: 100%; display: flex; padding: 10px justify-content: center">
-                <button class="btn red" @click="showAvatarModal = false">Cancelar</button>
-            </div>          
         </BrModal>
     </div>
 </template>
@@ -155,7 +177,19 @@
         background-color: #E9F4FB
         height: 100%
     .configForm
+        width: 500px
         padding-top: 50px
+        @media screen and (max-width:600px)
+            width: 100%
+        h3
+            font-weight: 700
+            font-size: 26px
+            line-height: 27px
+            color: #283848
+
+
+
+
     .avatarContainer
         display: flex
         justify-content: center
@@ -198,28 +232,30 @@
             border: 2px solid transparent
             &:hover
                 border: 2px solid #2693FF
-            
-
 
     .row
         display: flex
         justify-content: center
         gap: 10px
         align-items: center
-        margin-top: 10px
+        margin-top: 20px
         @media only screen and (max-width: 600px)
             flex-wrap: wrap
         
         .side
             width: calc(50% - 10px)
-            max-width: 400px
             @media only screen and (max-width: 600px)
                 width: 100%
-        .resetCaption
-            cursor: pointer
-            font-weight: 500
-            &:hover
-                color: red
+            .resetContainer
+                display: flex
+                align-items: center
+                justify-content: center
+                height: 50px
+                .resetCaption
+                    cursor: pointer
+                    font-weight: 500
+                    &:hover
+                        color: red
 
     .avatarModalTitle
         text-align: center
@@ -228,6 +264,9 @@
         font-weight: 600
         font-size: 24px
         padding-top: 20px
+
+    .inputs
+        margin-top: 20px
     
         
 
