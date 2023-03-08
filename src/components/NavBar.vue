@@ -5,14 +5,22 @@
         </div>
         <div class="listContainer" :class="direction === 'column' ? 'column' : 'row'">
             <!-- show vertical -->
-            <ul v-if="links && links.length && direction === 'column'" class="navList" :class="defineClass()">
-                <router-link v-for="(link, index) in links" :key="index"
-                    class="navLink" :class="url === link.url ? 'selected' : ''" 
-                    :to="link.url" tag="li"
+            <ul v-if="links && links.length && direction === 'column'" class="navList" :class="defineClass()">                
+                <li v-for="(link, index) in links" :key="index" >
+                    <router-link :to="link.url" class="navLink" :class="url === link.url ? 'selected' : ''">
+                        <i :class="link.icon"></i>
+                        <span>{{link.label}}</span>
+                    </router-link>
+                </li>                
+                
+                <!-- <router-link v-for="(link, index) in links" :key="index"                     
+                    :to="link.url"
                 >
-                    <i :class="link.icon"></i>
-                    <span>{{link.label}}</span>
-                </router-link>
+                    <li class="navLink" :class="url === link.url ? 'selected' : ''" :to="link.url">
+                        <i :class="link.icon"></i>
+                        <span>{{link.label}}</span>
+                    </li>
+                </router-link> -->
             </ul>
             
             <!-- show horizontal -->
@@ -34,7 +42,7 @@
         </div>
         <div>
             <span v-if="avatar" class="avatarContainer">
-                <img :src="getImageUrl(store.user.avatar)" alt="user avatar" class="avatarImg">
+                <img :src="`https://api.dicebear.com/5.x/adventurer/svg?seed=${store.user.avatar}`" alt="user avatar" class="avatarImg">
                 <!-- <img :src="avatarUrl" alt="user avatar" class="avatarImg"> -->
                 <div v-if="direction !== 'column'" class="userInfo">
                     <div class="username" :class="defineClass()">{{store.user.username}}</div>
@@ -46,9 +54,15 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, reactive, computed, PropType } from 'vue'
+    import { ref, computed, PropType } from 'vue'
     import { useAppStore } from '../stores/appStore'
     import { useRoute } from 'vue-router'    
+    
+    export interface Navlink {
+        icon: string,
+        label: string,
+        url: string,
+    }
 
     const store = useAppStore()
     const route = useRoute()
@@ -58,7 +72,7 @@
         color: String, // css color
         bgColor: String, // css color
         logo: String, // logo img name
-        links: {type: Array as PropType<any[]>}, // [ { icon, label, url },... ]
+        links: {type: Array as PropType<Navlink[]>}, // [ { icon, label, url },... ]
         avatar: Boolean, // show avatar or not
         bgSelected: String, // css color
         theme: {type: String, required: true} // color theme. current: 'blue', 'light'
@@ -168,6 +182,10 @@
         border: 1px solid #46A3FF
         cursor: pointer
         flex-direction: column
+        text-decoration: none
+        color: #fff
+        &:visited, &:link, &:hover, &:active
+            color: #fff
         > i
             font-size: 36px
             display: block            
@@ -175,11 +193,7 @@
             font-weight: 700
             font-size: 12px
             line-height: 13px
-            a
-                text-decoration: none
-                color: #fff
-                &:visited, &:link, &:hover, &:active
-                    color: #fff
+        
     
     .navMenu
         font-size: 40px
@@ -198,9 +212,9 @@
         display: flex
         align-items: center
         .avatarImg
-            height: 47px
+            height: 60px
             width: auto
-            border-radius: 50%
+            // border-radius: 50%
         .username
             font-weight: 600
             font-size: 15px

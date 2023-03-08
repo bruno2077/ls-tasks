@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginPage from '../views/LoginPage.vue'
 import TodoPage from '../views/TodoPage/Index.vue'
+import Dashboard from "../views/TodoPage/Dashboard.vue"
+import Tasks from '../views/TodoPage/Tasks.vue'
+import Config from '../views/TodoPage/Configuration.vue'
 
 const routes = [
   {
@@ -12,24 +15,24 @@ const routes = [
     path: '/app',
     component: TodoPage,
     children: [
-      // {
-      //   path: '',					
-      //   redirect: 'dashboard',
-      // },
+      {
+        path: '',					
+        redirect: '/app/dashboard',
+      },
       {
         path: 'dashboard',
-        name: 'dashboard',
-        component: () => import("../views/TodoPage/Dashboard.vue")
+        name: 'Dashboard',
+        component: Dashboard
       },
       {
         path: 'tarefas',
         name: 'tasks',
-        component: () => import('../views/TodoPage/Tasks.vue')
+        component: Tasks
       },
       {
         path: 'config',
         name: 'conf',
-        component: () => import('../views/TodoPage/Configuration.vue')
+        component: Config
       }				
     ]
   },
@@ -37,7 +40,6 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
-  // base: process.env.BASE_URL,
   routes
 })
 

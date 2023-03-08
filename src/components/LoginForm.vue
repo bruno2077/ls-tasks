@@ -5,7 +5,7 @@
         <BrInput label="Senha:" type="password" class="inputs" v-model="password"/>
         <button class="btn green loginBtn" @click="enter()">Entrar</button>
         <p class="forgotPass">
-            <a href="#">Esqueci minha senha</a>
+            <a href="#" @click="alertPasswd()">Esqueci minha senha</a>
         </p>
     </div>
 </template>
@@ -72,6 +72,10 @@
             else alert("Usuário e/ou senha incorreto(s). DICA: Deixe o nome em branco para logar com usuário padrão!")
         }
         //*/
+    }
+
+    function alertPasswd(){
+        alert("É só pressionar o botão 'Entrar'")
     }
 
 

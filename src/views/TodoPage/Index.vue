@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">	
-	import NavBar from '../../components/NavBar.vue'
+	import NavBar, { Navlink } from '../../components/NavBar.vue'
 	import { ref, onMounted, onBeforeUnmount } from 'vue'
 	import { useAppStore } from '../../stores/appStore'
 	import { useRouter } from 'vue-router'
@@ -35,17 +35,17 @@
 	const navLogo = ref('logo.png')
 	const clientWidth = ref(Number(window.innerWidth))
 
-	const navLinks: any[] = [
+	const navLinks: Navlink[] = [
 		{
 			icon: 'far fa-chart-bar',
 			label: 'Dashboard',
 			url: '/app/dashboard'
 		},
-		{
-			icon: 'far fa-check-circle',
-			label: 'Tarefas',
-			url: '/app/tarefas'
-		},
+		// {
+		// 	icon: 'far fa-check-circle',
+		// 	label: 'Tarefas',
+		// 	url: '/app/tarefas'
+		// },
 		{
 			icon: 'fas fa-cogs',
 			label: 'Configurações',

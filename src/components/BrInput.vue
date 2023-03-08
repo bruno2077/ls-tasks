@@ -1,13 +1,13 @@
 <template>
     <div class="container">
-        <label v-if="props.label" :for="id">{{props.label}}</label>
-        <textarea v-if="props.tag === 'textarea'" :id="id" :placeholder="props.placeholder" 
+        <label v-if="label" :for="id">{{label}}</label>
+        <textarea v-if="tag === 'textarea'" :id="id" :placeholder="placeholder" 
             :value="modelValue " @input="updateValue"
         ></textarea>
-        <input v-else :type="props.type ? props.type : 'text'" :id="id" :placeholder="props.placeholder || 'Digite'" 
+        <input v-else :type="type ? type : 'text'" :id="id" :placeholder="placeholder || ''" 
             :value="modelValue " @input="updateValue"
         >
-        <i v-if="props.icon" class="inputIcon" :class="icon"></i>
+        <i v-if="icon" class="inputIcon" :class="icon"></i>
     </div>    
 </template>
 
@@ -25,14 +25,14 @@
 
     const id = ref(`${Math.random() * 1000000}`) // TEMP. rumar depois um jeito de gerar id unico
     // const emit = defineEmits(['input'])        
-    const emit = defineEmits({
-        update: (value: string) => true
-    })
+    // const emit = defineEmits({
+    //     update: (value: string) => true
+    // })
+    const emit = defineEmits(['update:modelValue'])
 
     function updateValue(event: Event){
         const newValue = (event.target as HTMLInputElement).value
-        console.log("VALOR: ", newValue) // até aki OK
-        emit('update', newValue)
+        emit('update:modelValue', newValue)
     }
 </script>
 

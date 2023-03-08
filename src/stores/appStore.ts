@@ -7,41 +7,35 @@ export const useAppStore = defineStore('appStore', () => {
     const user = ref({} as User)
     const notes = ref([] as Note[])
 
-
-    // function loadUsers(payload: User[]) {
-    //     users.value = JSON.parse(JSON.stringify(payload))
-    // }
     
-    function loadUser(payload: User) {
+    
+    function loadUser(payload: User) {        
         user.value = payload
         localStorage.setItem('user', JSON.stringify(payload) )
         console.log('user updated: ', user.value)
     }
-    
 
     // function createUser(payload: User){
     //     users.value.push(payload)
     //     localStorage.setItem('appData', JSON.stringify([{users: users.value, notes: notes.value}]) ) 
     // }
 
-    //    function updateUser(payload: User){
-    //         for(let i = 0; i < users.value.length; i++){
-    //             if(users.value[i].id === payload.id) {
-    //                 users.value[i] = {...payload}
-    //                 break
-    //             }
-    //         }
-    //         localStorage.setItem('appData', JSON.stringify([{users: users.value, notes: notes.value}]) )
-    //     }
+    // function updateUser(payload: User | undefined){
+    //     if(payload)
+    //         user.value = payload
+    //     else user.value = {} as User
+        
+    //     localStorage.setItem('user', JSON.stringify(payload) )
+    // }
 
     function loadNotes(payload: Note[]) {
         notes.value = JSON.parse(JSON.stringify(payload))
     }
 
     function createNote(payload: Note){
+        payload.id = getNewNoteId()
         notes.value.push(payload)
-        localStorage.setItem('notes', JSON.stringify(notes) )
-
+        localStorage.setItem('notes', JSON.stringify(notes.value) )
     }
 
     function updateNote(payload: Note){
@@ -51,7 +45,7 @@ export const useAppStore = defineStore('appStore', () => {
                 break
             }
         }
-        localStorage.setItem('notes', JSON.stringify(notes) ) 
+        localStorage.setItem('notes', JSON.stringify(notes.value) ) 
     }
 
     function deleteNote(payload: number){
@@ -61,9 +55,23 @@ export const useAppStore = defineStore('appStore', () => {
                 break
             }
         }            
-        localStorage.setItem('notes', JSON.stringify(notes) )
+        localStorage.setItem('notes', JSON.stringify(notes.value) )
     }
 
-    return {user, notes, loadUser, loadNotes, createNote, updateNote, deleteNote}
+    function clearMemory(){
+        user.value = {} as User
+        notes.value = [] as Note[]
+        localStorage.clear()
+    }
+
+    function getNewNoteId(){
+        const ids: number[] = [0]
+        notes.value.forEach( (note: Note) => {
+            ids.push(note.id)
+        });
+        return Math.max(...ids) + 1 
+    }
+
+    return {user, notes, loadUser, loadNotes, createNote, updateNote, deleteNote, clearMemory}
     // return {users, notes, user, loadUsers, loadUser, loadNotes, createUser, updateUser, createNote, updateNote, deleteNote}
 })

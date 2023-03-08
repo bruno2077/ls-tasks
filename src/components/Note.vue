@@ -34,12 +34,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits, onBeforeMount, defineProps} from 'vue'
+import { ref, defineEmits, onBeforeMount, defineProps, PropType} from 'vue'
+import { Note } from '../types'   
 
 const emit = defineEmits(['edit','delete','check'])
 
 const props = defineProps({
-    note: {type: {} as any, required: true}
+    note: { type: Object as PropType<Note>, required: true}
 })
 
 // const noteLocal: any = ref({})
@@ -59,6 +60,7 @@ function updateValue(){
 
 
 onBeforeMount( () => {
+    console.log('kapp@@@')
     id.value = Math.trunc(Math.random() * 1000000) // temp
 })
 </script>

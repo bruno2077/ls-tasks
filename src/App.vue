@@ -7,7 +7,8 @@
 <script setup lang="ts">
 import { useAppStore } from './stores/appStore'
 import { ref, onMounted, nextTick } from 'vue'
-import { User, Note } from './types';
+import { User, Note } from './types'
+import { useRouter } from 'vue-router'
 // import defaultData from './assets/db.json'
 
 // interface AppDatabase {
@@ -16,10 +17,11 @@ import { User, Note } from './types';
 // }
 
 const myStore = useAppStore()
+const router = useRouter()
 const loading = ref(true)
 
 async function loadData(){
-	localStorage.clear()
+	// localStorage.clear()
 	// Add user
 	const lsUser: User | null = JSON.parse(localStorage.getItem('user') || 'null')
 	if(lsUser)
@@ -28,7 +30,7 @@ async function loadData(){
 		const defaultUser: User = {
 			id: 1,
 			avatar: 'nggyu.png',
-			username: 'Never Gave You Up',
+			username: 'Dom Quixote',
 			whois: 'Rickroll Developer',
 			password: '12345',
 			lastLogin: 1672488862248,
@@ -38,30 +40,17 @@ async function loadData(){
 	} 
 
 	// Add notes
-	const lsNotes: Note[] | null = JSON.parse(localStorage.getItem('notes') || 'null' )
+	const lsNotes: Note[] | null = JSON.parse(localStorage.getItem('notes') || 'null')
 	if(lsNotes)
 		myStore.loadNotes(lsNotes)
 
-	// let appData: any = JSON.parse(localStorage.getItem('appData') || 'null' ) // AppDatabase | null
-	// if(appData && appData.length)
-	// 	appData = appData[0]
-	
-	// if(!appData){
-	// 	appData = defaultData[0] // pega do JSON
-	// }
-
-	// myStore.loadUsers(appData.users)
-	// myStore.loadUser( currentUser(appData.users))
-	// myStore.loadNotes(appData.users)	
-	// this.$store.commit('loadUsers', appData.users)
-	// this.$store.commit('loadUser', this.currentUser(appData.users) )	
-	// this.$store.commit('loadNotes', appData.notes)
-
-
-	// await nextTick()
 	console.log("onload user: ", myStore.user)
-	loading.value = false
-	
+	console.log("onload notes: ", myStore.notes)
+	if(router){
+
+	}
+
+	loading.value = false	
 }
 
 // Se 1 ou + usuários fizeram login nos últimos 60minutos retorna o usuário logado mais recentemente. Ou {} se nenhum.

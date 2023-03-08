@@ -59,8 +59,8 @@
                     <i @click="closeEditModal()" class='modalCloseBtn fas fa-times'></i>
                     <h3 v-if="selectedNote.id">Editar Tarefa</h3>
                     <h3 v-else>Cadastrar Tarefa</h3>
-                    <BrInput class="note" v-model="temptitle" @change="getLog()"></BrInput>
-                    <BrInput tag="textarea" label="Descrição:" class="description" v-model="selectedNote.description"></BrInput>
+                    <BrInput class="note" v-model="selectedNote.title"></BrInput>
+                    <BrInput tag="textarea" label="Descrição:" class="description" v-model="selectedNote.description"></BrInput>                    
                     <div class="footer">
                         <div>
                             <div class="divRadio" :class="selectedNote.category === 'Urgente' ? 'selected' : ''" 
@@ -90,7 +90,7 @@
             </BrModal>
 
             <BrModal v-if="showDelModal" width="477px">
-                <div slot="body" class="delNoteModal">
+                <div slot="body" class="delModal">
                     <div class="bigIcon">
                         <i class="far fa-trash-alt"></i>
                     </div>
@@ -125,8 +125,6 @@
         description: '',
         updatedAt: 0
     }
-
-    const temptitle = ref('')
 
     const categories = ref(<Array<any>>[
         {
@@ -180,16 +178,11 @@
         return notes.value.length
     })
 
-    function getLog(){
-        console.log("WAT: ", temptitle.value)
-        // console.log(selectedNote.value.title)
-    }
-
 
     function getNotes(): void{
         notes.value =  store.notes.filter((el: Note) => el.userId === store.user.id) // armazena todas as tarefas
         countCategory() // Conta quantas tarefas são 'Urgente' e 'Importante'
-        filterNotes() // armazena e lida com as tarefas que são mostradas                
+        filterNotes() // armazena e lida com as tarefas que são mostradas
         ++listKey.value
     }
 
@@ -311,7 +304,8 @@
 
     function filterNotesByString(){
         if(searchInput.value){
-            currentNotes.value = currentNotes.value.filter(el => el.title.includes(searchInput.value) ||  el.description.includes(searchInput.value))
+            const inputVal =  searchInput.value.toLowerCase()
+            currentNotes.value = currentNotes.value.filter(el => el.title.toLowerCase().includes(inputVal) ||  el.description.toLowerCase().includes(inputVal))
         }
     }
 
@@ -321,29 +315,21 @@
         getNotes()
     }
 
-    function saveNote(){
-        showEditModal.value = false
+    function saveNote(){        
         if(selectedNote.value.id){ // UPDATE
             selectedNote.value.updatedAt = new Date().getTime()
             store.updateNote(selectedNote.value)
         }
         else { // CREATE
-            selectedNote.value.id = idGenerator(notes.value)
+            // selectedNote.value.id = idGenerator(notes.value)
             selectedNote.value.userId = store.user.id
             selectedNote.value.updatedAt = new Date().getTime()
             store.createNote(selectedNote.value)
         }
         selectedNote.value = {...noteInitialState}
+        showEditModal.value = false
         getNotes()
-    }
-
-    function idGenerator(arrayObject: Note[]): number{
-        let biggest = 1
-        arrayObject.forEach(el => {
-            if(el.id >= biggest)
-                biggest = el.id+1                    
-        })
-        return biggest
+        console.log('KaPpA')
     }
 </script>
 
@@ -444,7 +430,7 @@
         height: 77px
         font-size: 24px
 
-    .delNoteModal        
+    .delModal        
         padding: 40px 10px 
         .bigIcon
             display: flex
