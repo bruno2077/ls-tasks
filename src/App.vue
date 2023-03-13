@@ -43,9 +43,7 @@ async function loadData(){
 	const lsNotes: Note[] | null = JSON.parse(localStorage.getItem('notes') || 'null')
 	if(lsNotes)
 		myStore.loadNotes(lsNotes)
-
-	console.log("onload user: ", myStore.user)
-	console.log("onload notes: ", myStore.notes)
+	
 	if(router){
 
 	}

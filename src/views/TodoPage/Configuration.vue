@@ -11,6 +11,7 @@
                 <div class="avatarDiv" @click="openAvatarModal()">
                     <img :src="`https://api.dicebear.com/5.x/adventurer/svg?seed=${avatarSeed}`" alt="Avatar" >
                 </div>
+                <span>Avatar</span>
             </div>
 
             <div class="">                
@@ -82,13 +83,13 @@
                         <span @click="generateNewAvatars()">Mudar <i class="fas fa-sync-alt" style="margin-left: 4px; display: inline-block;"></i></span>
                     </div>
                     <div v-for="(seed, index) in images" :key="index" class="listItem">
-                        <!-- <div class="avatarDiv"> -->
+                        <div class="imgDiv">
                             <img 
                                 :src="`https://api.dicebear.com/5.x/adventurer/svg?seed=${seed}`" 
                                 :alt="'avatar'+index"
                                 @click="pickAvatar(seed)" 
                             >
-                        <!-- </div> -->
+                        </div>
                     </div>
                     <div style="width: 100%; display: flex; padding: 20px 5px 10px 5px; justify-content: center">
                         <button class="btn sm red" style="width: 100%" @click="showAvatarModal = false">Cancelar</button>
@@ -188,17 +189,20 @@
             color: #283848
 
 
-
-
     .avatarContainer
         display: flex
+        flex-direction: column
         justify-content: center
+        align-items: center
         margin-bottom: 10px
+        > span 
+            color: #4E657B
+            font-weight:  600
     .avatarDiv
         width: $avatarSize
         height: $avatarSize
         background-color: #fff
-        border-radius: 50%
+        border-radius: 25%
         display: flex
         align-items: center
         justify-content: center
@@ -213,25 +217,38 @@
         align-items: center
         justify-content: space-between
         flex-wrap: wrap
-        width: 400px
+        width: 100%
+        margin: 0px 25px
+        // background-color: pink     
         position: relative
         .avatarRefresh
-            text-align: right 
+            text-align: center
             width: 100%
-            margin-bottom: 5px
+            margin-bottom: 15px
             > span  
-                margin-right: 15px
+                // margin-right: 15px
                 cursor: pointer
                 &:hover
                     color: #2693FF
         .listItem 
-            margin: 8px
-            width: 90px
-            cursor: pointer
-            border-radius: 8px
-            border: 2px solid transparent
-            &:hover
-                border: 2px solid #2693FF
+            width: 33%
+            display: flex
+            align-items: center
+            justify-content: center
+            @media screen and (max-width: 450px)
+                width: 50%
+            .imgDiv
+                padding: 0px 8px
+                cursor: pointer
+                border-radius: 8px
+                border: 2px solid transparent
+                &:hover
+                    border: 2px solid #2693FF
+                img 
+                    width: 100px
+                    height: 100px
+
+            
 
     .row
         display: flex

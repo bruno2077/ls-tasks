@@ -11,7 +11,7 @@
             <!-- chip -->
             <span v-if="note.category" class="chip" :class="note.category === 'Urgente' ? 'red' : 'yellow'">
                 {{note.category}}
-            </span>
+            </span>            
             <!-- icon -->
             <div class="dropdown">
                 <i class="fas fa-ellipsis-v showOptions"></i>
@@ -216,6 +216,8 @@ onBeforeMount( () => {
         .note
             > div
                 min-width: 120px
+                display: flex
+                justify-content: flex-end
         .checkContainer
             .checkLabel
                 font-size: 12px

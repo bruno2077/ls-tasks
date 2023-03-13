@@ -329,7 +329,6 @@
         selectedNote.value = {...noteInitialState}
         showEditModal.value = false
         getNotes()
-        console.log('KaPpA')
     }
 </script>
 
@@ -468,7 +467,7 @@
             margin-bottom: 6px
             .btn
                 height: 41px
-                margin: 0px 6px
+                margin: 5px 6px
                 padding: 0px 27px            
 
     .editNoteModal
@@ -491,14 +490,15 @@
             display: flex
             justify-content: space-between
             align-items: center
+            flex-wrap: wrap
             div
                 display: flex
                 .divRadio
                     position: relative
                     display: flex
                     align-items: center
-                    margin-right: 12px
-                    cursor: pointer
+                    margin: 10px 12px 10px 0px
+                    cursor: pointer                    
                     .outer
                         position: absolute
                         border-radius: 50%

@@ -11,16 +11,7 @@
                         <i :class="link.icon"></i>
                         <span>{{link.label}}</span>
                     </router-link>
-                </li>                
-                
-                <!-- <router-link v-for="(link, index) in links" :key="index"                     
-                    :to="link.url"
-                >
-                    <li class="navLink" :class="url === link.url ? 'selected' : ''" :to="link.url">
-                        <i :class="link.icon"></i>
-                        <span>{{link.label}}</span>
-                    </li>
-                </router-link> -->
+                </li>
             </ul>
             
             <!-- show horizontal -->
@@ -29,13 +20,12 @@
                 
                 <div class="dropdown-content">
                     <ul>
-                        <router-link v-for="(link, index) in links" :key="index"
-                            class="navLinkMobile" :class="url === link.url ? 'selected' : ''" 
-                            :to="link.url" tag="li"
-                        >
+                        <li v-for="(link, index) in links" :key="index" class="navLinkMobile" :class="url === link.url ? 'selected' : ''">
+                        <router-link  :to="link.url" >
                             <i :class="link.icon"></i>
                             <span>{{link.label}}</span>
                         </router-link>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -255,9 +245,16 @@
                 list-style: none
                 padding: 0px
                 .navLinkMobile
-                    padding: 10px 0px 10px 40px
+                    
                     display: flex
                     align-items: center
+                    a
+                        padding: 10px 0px 10px 40px
+                        text-decoration: none
+                        display: inline-block
+                        width: 100%
+                        &:visited, &:link, &:hover, &:active
+                            color: inherit                        
                     i
                         font-size: 25px
                         margin-right: 10px

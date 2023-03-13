@@ -79,6 +79,7 @@
 		display: flex
 		height: 100vh
 		width: 100vw
+		overflow: hidden
 	.navBarMain
 		width: 106px
 	.todoRight
@@ -89,7 +90,7 @@
 		width: 100%
 		height: 83px
 	.todoRouterContainer
-		height: calc(100% - 83px) // desconta a navBarTop
+		height: calc(100vh - 83px) // desconta a navBarTop
 	
 	@media only screen and (max-width:768px)
 		.todoContainer
@@ -99,6 +100,7 @@
 			height: 83px
 		.navBarTop
 			display: none
-		.todoRouterContainer
-			height: 100%
+		// .todoRouterContainer
+		// 	height: calc(100% - 323px)
+		// 	overflow: auto
 </style>
