@@ -23,11 +23,7 @@
         placeholder: String,
     })
 
-    const id = ref(`${Math.random() * 1000000}`) // TEMP. rumar depois um jeito de gerar id unico
-    // const emit = defineEmits(['input'])        
-    // const emit = defineEmits({
-    //     update: (value: string) => true
-    // })
+    const id = `${Math.trunc(Math.random() * 1000000)}`
     const emit = defineEmits(['update:modelValue'])
 
     function updateValue(event: Event){

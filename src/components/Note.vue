@@ -65,9 +65,12 @@ function updateValue(){
         padding: 16px 16px 16px 14px
         border-radius: 5px
         &.done
-            opacity: 50%
+            background-color: #F4FAFD
             .checkContainer
-                text-decoration: line-through     
+                opacity: 50%
+                text-decoration: line-through            
+            .chip
+                opacity: 50%
         > div
             display: flex
             flex-wrap: none

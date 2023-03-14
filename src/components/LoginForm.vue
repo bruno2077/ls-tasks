@@ -30,7 +30,7 @@
     const defaultUser: User = {
         id: 1,
         avatar: 'Sam&earrings[]&eyebrows[]&eyes[]&features[]&glasses=variant01&glassesProbability=100&hair=short16&hairColor=592454&mouth[]',
-        username: 'Bruno Borges',
+        username: 'Salaryman',
         whois: 'Front-End Developer',
         password: '12345',
         lastLogin: 1672488862248,
@@ -46,7 +46,7 @@
         user.logged = true
         user.lastLogin = new Date().getTime()
         store.loadUser(user) // Carrega o usuário logado na Store e no LocalStorage
-        router.push('/app/dashboard') // tela dashboard
+        router.push('/app/dashboard')
     }
 
     function alertPasswd(){

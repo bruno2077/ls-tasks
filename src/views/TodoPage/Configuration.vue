@@ -111,15 +111,12 @@
     function updateUserData(){
         if(password.value && whois.value && username.value){
             if(password.value === confirmPassword.value){
-                console.log("LEN:", password.value.length)
                 if(password.value.length >= 5) {
                     const userData = store.user
                     userData.username = username.value
                     userData.whois = whois.value
                     userData.password = password.value
                     userData.avatar = avatarSeed.value
-
-                    console.log("OBJ 2 Send: ", userData)
     
                     store.loadUser(userData)
     

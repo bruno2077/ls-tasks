@@ -59,7 +59,6 @@
 
 	
 	onMounted(() => {
-		console.log("APP ZTORE: ", store.user)
 		const currentUser = {...store.user}
 		if(!currentUser.id) // Se não tem usuário logado redir pra loginPage
 			router.push('/')

@@ -180,7 +180,16 @@
 
 
     function getNotes(): void{
-        notes.value =  store.notes.filter((el: Note) => el.userId === store.user.id) // armazena todas as tarefas
+        console.log("TASKS: ", store.notes)
+        if(!store.notes.length){
+            let lsNotes = localStorage.getItem('notes')
+            if(lsNotes){
+                const parsedNotes = JSON.parse(lsNotes)
+                store.loadNotes(parsedNotes)                
+            }            
+        }
+        notes.value = store.notes.filter((el: Note) => el.userId === store.user.id)
+        
         countCategory() // Conta quantas tarefas são 'Urgente' e 'Importante'
         filterNotes() // armazena e lida com as tarefas que são mostradas
         ++listKey.value

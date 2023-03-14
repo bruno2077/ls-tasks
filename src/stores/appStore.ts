@@ -11,7 +11,6 @@ export const useAppStore = defineStore('appStore', () => {
     function loadUser(payload: User) {        
         user.value = payload
         localStorage.setItem('user', JSON.stringify(payload) )
-        console.log('user updated: ', user.value)
     }
 
     function loadNotes(payload: Note[]) {
