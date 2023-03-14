@@ -43,10 +43,6 @@ const props = defineProps({
     note: { type: Object as PropType<Note>, required: true}
 })
 
-// const noteLocal: any = ref({})
-const id = ref(0)
-
-
 function editEvent(){
     emit('edit', props.note)
 }
@@ -58,11 +54,6 @@ function updateValue(){
     emit('check', props.note)
 }
 
-
-onBeforeMount( () => {
-    console.log('kapp@@@')
-    id.value = Math.trunc(Math.random() * 1000000) // temp
-})
 </script>
 
 <style lang="stylus" scoped>
@@ -163,7 +154,7 @@ onBeforeMount( () => {
         transform: rotate(45deg)
 
     // Dropdown
-    .dropdown 
+    .dropdown
         position: relative
         display: inline-block
         &:hover .dropdown-content 

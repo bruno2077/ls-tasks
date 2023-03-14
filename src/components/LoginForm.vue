@@ -27,67 +27,39 @@
     // const confirmPassword = ref('')
     const logged = ref(false)
 
+    const defaultUser: User = {
+        id: 1,
+        avatar: 'Sam&earrings[]&eyebrows[]&eyes[]&features[]&glasses=variant01&glassesProbability=100&hair=short16&hairColor=592454&mouth[]',
+        username: 'Bruno Borges',
+        whois: 'Front-End Developer',
+        password: '12345',
+        lastLogin: 1672488862248,
+        logged: false
+    }
 
-    // Procura o usuário na Store. retorna o usuário ou false em caso de erro.
-    // function findUser(defaultUser: boolean): User | false {
-    //     let user: User
-    //     if(defaultUser)
-    //         user = {...store.users.filter(el => el.id === 1)[0] }
-    //     else user = store.users.filter(el => el.username === username.value && el.password === password.value)[0]
-        
-    //     if(Object.keys(user).length)
-    //         return user                
-    //     return false // Não encontrado
-    // }
-
-    // Cria usuário ou faz login.
-    // No caso de login: com o 1º campo vazio loga com o usuário padrão.
-    // No caso de criar: nome/email de usuário deve ser único.
+    // Faz login e redireciona pra outra tela. Se não tem usuário no localstorage pega o usuário padrão.
     function enter(): void {
-        let user: User = store.user
-        console.log('pre user: ', JSON.parse(JSON.stringify(user)))
+        let user: User
+        if(store.user.id)
+            user = store.user
+        else user = defaultUser
         user.logged = true
-        user.lastLogin = new Date().getTime() // atualiza o horário do último login
+        user.lastLogin = new Date().getTime()
         store.loadUser(user) // Carrega o usuário logado na Store e no LocalStorage
-
         router.push('/app/dashboard') // tela dashboard
-        
-
-        //-----------------------
-        /*
-        if(!signUp.value){ // LOGIN
-            let user: User | false
-            if(!username.value) // Carrega usuário padrão
-                user = findUser(true)                        
-            else user = findUser(false)
-            
-            if(user){
-                user.logged = true
-                user.lastLogin = new Date().getTime() // atualiza o horário do último login
-                store.loadUser(user) // Carrega o usuário logado na Store
-                store.updateUser(user) // Como modifica o horário do último login, atualiza na Store e no LocalStorage
-                
-                router.push('/app') // tela dashboard
-            }
-            else alert("Usuário e/ou senha incorreto(s). DICA: Deixe o nome em branco para logar com usuário padrão!")
-        }
-        //*/
     }
 
     function alertPasswd(){
         alert("É só pressionar o botão 'Entrar'")
     }
 
-
     onMounted( () => {
-        // REVER ISSO
-        // Se tem usuário logado já preenche o form com seus dados.
+        // Se usuário já logado preenche o form com seus dados.
         if(store.user.id){
             username.value = store.user.username
             whois.value = store.user.whois
             avatar.value = store.user.avatar
-            password.value = store.user.password
-            
+            password.value = store.user.password            
             logged.value = true
         }
     })

@@ -6,7 +6,6 @@ export const useAppStore = defineStore('appStore', () => {
 
     const user = ref({} as User)
     const notes = ref([] as Note[])
-
     
     
     function loadUser(payload: User) {        
@@ -14,19 +13,6 @@ export const useAppStore = defineStore('appStore', () => {
         localStorage.setItem('user', JSON.stringify(payload) )
         console.log('user updated: ', user.value)
     }
-
-    // function createUser(payload: User){
-    //     users.value.push(payload)
-    //     localStorage.setItem('appData', JSON.stringify([{users: users.value, notes: notes.value}]) ) 
-    // }
-
-    // function updateUser(payload: User | undefined){
-    //     if(payload)
-    //         user.value = payload
-    //     else user.value = {} as User
-        
-    //     localStorage.setItem('user', JSON.stringify(payload) )
-    // }
 
     function loadNotes(payload: Note[]) {
         notes.value = JSON.parse(JSON.stringify(payload))
@@ -73,5 +59,4 @@ export const useAppStore = defineStore('appStore', () => {
     }
 
     return {user, notes, loadUser, loadNotes, createNote, updateNote, deleteNote, clearMemory}
-    // return {users, notes, user, loadUsers, loadUser, loadNotes, createUser, updateUser, createNote, updateNote, deleteNote}
 })

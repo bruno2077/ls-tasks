@@ -321,7 +321,6 @@
             store.updateNote(selectedNote.value)
         }
         else { // CREATE
-            // selectedNote.value.id = idGenerator(notes.value)
             selectedNote.value.userId = store.user.id
             selectedNote.value.updatedAt = new Date().getTime()
             store.createNote(selectedNote.value)

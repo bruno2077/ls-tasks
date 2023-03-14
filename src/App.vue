@@ -1,79 +1,34 @@
 <template>
 	<div class="mainContainer">
-		<router-view v-if="!loading"></router-view>
+		<router-view v-if="!validatingUser"></router-view>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { useAppStore } from './stores/appStore'
-import { ref, onMounted, nextTick } from 'vue'
-import { User, Note } from './types'
-import { useRouter } from 'vue-router'
-// import defaultData from './assets/db.json'
-
-// interface AppDatabase {
-// 	users: User[],
-// 	notes: Note[]	
-// }
+import { ref, onMounted } from 'vue'
+import { User } from './types'
+import { useRoute, useRouter } from 'vue-router'
 
 const myStore = useAppStore()
 const router = useRouter()
-const loading = ref(true)
-
-async function loadData(){
-	// localStorage.clear()
-	// Add user
-	const lsUser: User | null = JSON.parse(localStorage.getItem('user') || 'null')
-	if(lsUser)
-		myStore.loadUser(lsUser)
-	else{
-		const defaultUser: User = {
-			id: 1,
-			avatar: 'nggyu.png',
-			username: 'Dom Quixote',
-			whois: 'Rickroll Developer',
-			password: '12345',
-			lastLogin: 1672488862248,
-			logged: false
-		}
-		myStore.loadUser(defaultUser)
-	} 
-
-	// Add notes
-	const lsNotes: Note[] | null = JSON.parse(localStorage.getItem('notes') || 'null')
-	if(lsNotes)
-		myStore.loadNotes(lsNotes)
-	
-	if(router){
-
-	}
-
-	loading.value = false	
-}
-
-// Se 1 ou + usuários fizeram login nos últimos 60minutos retorna o usuário logado mais recentemente. Ou {} se nenhum.
-// function currentUser(users: User[]): User | null {
-// 	const now = new Date().getTime()
-// 	let loggedUsers = users.filter(el => el.logged)
-// 	if(loggedUsers.length > 1){
-// 		loggedUsers.sort(compareByDate)
-// 		if(now - Number(loggedUsers[0].lastLogin) <= 3600000){
-// 			return loggedUsers[0]
-// 		}
-// 	}
-// 	return null
-// }
-
-// function compareByDate(a: User, b: User) {
-// 	if ( Number(a.lastLogin) < Number(b.lastLogin) )
-// 		return 1			
-// 	if ( Number(a.lastLogin) > Number(b.lastLogin) )
-// 		return -1			
-// 	return 0			
-// }
+const route = useRoute()
+const validatingUser = ref(true)
 
 onMounted(() => {
-    loadData()	
+	// checa se o LS tem user. Se tiver verfica se tá logado a menos de 1hora. Se tiver prossegue senão vai pra tela de login.
+	let lsUser: string | null = localStorage.getItem('user')
+	if(lsUser){
+		let user: User = JSON.parse(lsUser)
+		if(user.logged && (new Date().getTime() - user.lastLogin <= 3600000 )) // Se user logado a menos de 1 hora, prossegue.
+			myStore.loadUser(user)
+		
+		else if(route.path !== '/'){
+			router.replace('/')
+			window.location.reload()
+		}
+		validatingUser.value = false
+	}	
 })
 </script>
 

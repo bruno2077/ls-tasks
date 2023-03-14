@@ -1,8 +1,5 @@
 <template>
     <div class="configContainer">
-
-        
-           
         <div style="margin: 15px" class="configForm">
 
             <h3 style="text-align: center;">Configurações</h3>
@@ -29,34 +26,6 @@
                     </span>
                 </div>
             </div>
-
-            <!-- 
-            <div class="row">
-                <span class="side">
-                    <BrInput label="Nome de usuário ou e-mail:" class="inputs" v-model="username" style=""/>
-                </span>
-                <span class="side">
-                    <BrInput label="Ocupação:" class="inputs" v-model="whois" style=""/>
-                </span>
-            </div>
-
-            <div class="row">
-                <span class="side">
-                    <BrInput label="Senha:" class="inputs" v-model="password" type="password"/>
-                </span>
-                <span class="side">
-                    <BrInput label="Repita a senha:" class="inputs" v-model="confirmPassword" type="password"/>
-                </span>
-            </div>
-
-            <div class="row">
-                <button class="btn green side" style="" @click="updateUserData()">Salvar</button>
-                
-                <span class="side" style="text-align: center">
-                    <span class="resetCaption" @click="showResetModal = true">Limpar memória</span>
-                </span>
-            </div>
-             -->
         </div>
 
         <BrModal v-if="showResetModal" width="450px">
@@ -177,6 +146,7 @@
         justify-content: center
         background-color: #E9F4FB
         height: 100%
+        overflow: auto
     .configForm
         width: 500px
         padding-top: 50px
