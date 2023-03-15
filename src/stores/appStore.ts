@@ -15,6 +15,7 @@ export const useAppStore = defineStore('appStore', () => {
 
     function loadNotes(payload: Note[]) {
         notes.value = JSON.parse(JSON.stringify(payload))
+        localStorage.setItem('notes', JSON.stringify(payload) )
     }
 
     function createNote(payload: Note){

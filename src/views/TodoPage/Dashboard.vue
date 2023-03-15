@@ -180,7 +180,6 @@
 
 
     function getNotes(): void{
-        console.log("TASKS: ", store.notes)
         if(!store.notes.length){
             let lsNotes = localStorage.getItem('notes')
             if(lsNotes){
@@ -226,10 +225,7 @@
 
         if (a.category === 'Importante')
             return -1			
-        if (b.category === 'Importante')
-            return 1
-
-        return 0 // Só pro ts não chorar
+        else return 1 // (b.category === 'Importante')
     }
 
     function compareByDate(a: Note, b: Note): number {

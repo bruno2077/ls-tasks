@@ -41,11 +41,6 @@
 			label: 'Dashboard',
 			url: '/app/dashboard'
 		},
-		// {
-		// 	icon: 'far fa-check-circle',
-		// 	label: 'Tarefas',
-		// 	url: '/app/tarefas'
-		// },
 		{
 			icon: 'fas fa-cogs',
 			label: 'Configurações',

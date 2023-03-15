@@ -81,11 +81,8 @@
         return new URL(`../assets/images/${name}`, import.meta.url).href
     }
 
-    function defineStyle(): string{
+    function defineStyle(): string {
         let style = ''
-        // if(this.props.direction === 'column')
-        //     style = 'flex-direction: column; height: 100vh'
-        // else style = 'width: 100vh'
 
         style += props.color ? `color: ${props.color}; ` : 'color: #222; '
         style += props.bgColor ? `background-color: ${props.bgColor}; ` : 'background-color: #fff; '

@@ -20,15 +20,14 @@ onMounted(() => {
 	let lsUser: string | null = localStorage.getItem('user')
 	if(lsUser){
 		let user: User = JSON.parse(lsUser)
-		if(user.logged && (new Date().getTime() - user.lastLogin <= 3600000 )) // Se user logado a menos de 1 hora, prossegue.
+		if(user.logged && (new Date().getTime() - user.lastLogin <= 3600000 )) // Se user logado a menos de 1 hora carrega na Store.
 			myStore.loadUser(user)
-		
-		else if(route.path !== '/'){
-			router.replace('/')
-			window.location.reload()
-		}
-		validatingUser.value = false
 	}	
+	if(route.path !== '/' && !myStore.user.id){
+		router.replace('/')
+		window.location.reload()
+	}
+	else validatingUser.value = false
 })
 </script>
 

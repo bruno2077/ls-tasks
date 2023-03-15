@@ -15,7 +15,7 @@
     import BrInput from './BrInput.vue'
     import { useAppStore } from '../stores/appStore'
     import { useRouter } from 'vue-router'
-    import { User } from '../types'
+    import { User, Note } from '../types'
 
     const store = useAppStore()
     const router = useRouter()
@@ -36,13 +36,56 @@
         lastLogin: 1672488862248,
         logged: false
     }
+    const defaultNotes: Note[] = [
+        {
+            "id": 1,
+            "userId": 1,
+            "done": true,
+            "category": "Urgente",
+            "title": "Ver o sol nascer",
+            "description": "",
+            "updatedAt": 1678898055666
+        },
+        {
+            "id": 2,
+            "userId": 1,
+            "done": false,
+            "category": "Importante",
+            "title": "Trabalhar menos",
+            "description": "Arriscar mais, errar mais.",
+            "updatedAt": 1678898079033
+        },
+        {
+            "id": 3,
+            "userId": 1,
+            "done": false,
+            "category": "",
+            "title": "Preocupar menos com problemas pequenos",
+            "description": "A cada um cabe alegrias e a tristeza que vier.",
+            "updatedAt": 1678898221968
+        },
+        {
+            "id": 4,
+            "userId": 1,
+            "done": false,
+            "category": "",
+            "title": "Ver o sol se pôr",
+            "description": "Tempo perdido.mp3",
+            "updatedAt": 1678898229392
+        }
+    ]
+
 
     // Faz login e redireciona pra outra tela. Se não tem usuário no localstorage pega o usuário padrão.
     function enter(): void {
         let user: User
         if(store.user.id)
             user = store.user
-        else user = defaultUser
+        else {
+            user = defaultUser
+            if(!localStorage.getItem('notes')) // cai aqui na 1ª vez. preenche com tarefas padrão
+                store.loadNotes(defaultNotes)
+        }
         user.logged = true
         user.lastLogin = new Date().getTime()
         store.loadUser(user) // Carrega o usuário logado na Store e no LocalStorage
