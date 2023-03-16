@@ -32,7 +32,7 @@
 	const router = useRouter()    
 	
 	const loggedUser = ref(false)
-	const navLogo = ref('logo.png')
+	const navLogo = ref('Logo.png')
 	const clientWidth = ref(Number(window.innerWidth))
 
 	const navLinks: Navlink[] = [

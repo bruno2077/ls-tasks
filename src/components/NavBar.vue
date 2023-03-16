@@ -1,7 +1,7 @@
 <template>    
     <div class="navBar" :class="defineClass()">
         <div class="imgContainer">
-            <img v-if="logo" src="../assets/img/logo.png" alt="navbar icon" class="navLogo">
+            <img v-if="logo" src="../assets/img/Logo.png" alt="navbar icon" class="navLogo">
         </div>
         <div class="listContainer" :class="direction === 'column' ? 'column' : 'row'">
             <!-- show vertical -->

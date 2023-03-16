@@ -1,7 +1,7 @@
 <template>
 	<div class="login">
 		<div class="logoArea">
-			<img class="logo" src="../assets/img/logoFull.png" alt="Logo Local Storage Tasks"/>
+			<img class="logo" src="../assets/img/LogoFull.png" alt="Logo Local Storage Tasks"/>
 		</div>
 		<div class="formArea">
 			<LoginForm class="loginComponent"/>
