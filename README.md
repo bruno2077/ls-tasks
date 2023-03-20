@@ -2,15 +2,14 @@
     <a href="#" >
       <img src="https://i.ibb.co/rmyCNxw/friso.png" style="max-width: 450px;"alt="Local Storage Tasks">      
     </a>
-
-# Local Storage Tasks
-
 </div>
 
 <div align="center">
     <a href="https://bruno2077.github.io/" >
         <img src="https://img.shields.io/badge/Feito%20por-Bruno2077-blueviolet" alt="Made by Bruno2077">
     </a>
+    <img src="https://img.shields.io/badge/Vue-3.2.45-brightgreen" alt="Vue 3">
+    <img src="https://img.shields.io/badge/Typescript-4.9.3-blue" alt="Typescript v4.9.3">
     <img src="https://img.shields.io/github/license/bruno2077/ls-tasks.svg" alt="License MIT">
 </div>
 
@@ -21,7 +20,7 @@
 ## Descrição
 Este é um gerenciador de tarefas onde é possível organizar suas tarefas diárias, priorizá-las e monitorar seu progresso. Todos os dados ficam gravados no seu próprio navegador não necessitando de nenhum servidor. Basta logar (não necessita de senha) e começar a usar. O usuário padrão é personalizável, portanto não deixe de escolher o melhor avatar que combina com você. Desenvolvido com Vue 3 e Typescript.
 
-## Demo
+## Site
 Confira o projeto no link: https://ls-tasks.vercel.app/
 
 ## Pré Requisitos
